@@ -1,9 +1,9 @@
-import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn, BeforeInsert} from "typeorm";
+import {Entity, Column, PrimaryColumn, BeforeInsert, BaseEntity} from "typeorm";
 import uuidv4 = require('uuid/v4');
 
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryColumn("uuid") 
     id: string;
