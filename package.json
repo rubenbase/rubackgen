@@ -4,6 +4,7 @@
    "description": "Boilerplate for Nodejs, GraphQL and Postgre projects.",
    "devDependencies": {
       "@types/node": "^10.0.8",
+      "@types/uuid": "^3.4.3",
       "nodemon": "^1.17.4",
       "ts-node": "6.0.3",
       "tslint": "^5.10.0",
@@ -14,7 +15,8 @@
       "graphql-yoga": "^1.13.1",
       "pg": "^7.4.3",
       "reflect-metadata": "^0.1.12",
-      "typeorm": "0.2.5"
+      "typeorm": "0.2.5",
+      "uuid": "^3.2.1"
    },
    "scripts": {
       "start": "nodemon --exec ts-node src/index.ts"
