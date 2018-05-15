@@ -11,9 +11,7 @@ const server = new GraphQLServer({ typeDefs, resolvers });
 
 createConnection()
   .then(connection => {
-    // here you can start to work with your entities
     console.log(connection);
+    server.start(() => console.log("Server is running on localhost:4000"));
   })
   .catch(error => console.log(error));
-
-server.start(() => console.log("Server is running on localhost:4000"));

@@ -17,7 +17,7 @@ export const resolvers: ResolverMap = {
         email,
         password: hashedPassword
       });
-      user.save();
+      await user.save();
       return true;
     }
   }
