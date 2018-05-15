@@ -1,14 +1,17 @@
 import { request } from "graphql-request";
 
-import { host } from "./constants";
 import { User } from "../entity/User";
-import { createTypeormConn } from "../utils/createTypeormConn";
+import { startServer } from "../utils/startServer";
+
+let host = "";
 
 beforeAll(async () => {
-  await createTypeormConn();
+  const app = await startServer();
+  const { port }: any = app.address();
+  host = `http://127.0.0.1:${port}`;
 });
 
-const email = "example2@rubackgen.com";
+const email = "test@rubackgen.com";
 const password = "12345";
 
 const mutation = `
@@ -26,7 +29,3 @@ test("Register user", async () => {
   expect(user.email).toEqual(email);
   expect(user.password).not.toEqual(password);
 });
-
-// use a test database
-// drop all data once the test is over
-// when I run yarn test it also starts the server
