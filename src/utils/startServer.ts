@@ -1,18 +1,18 @@
-import { importSchema } from "graphql-import";
-import { GraphQLServer } from "graphql-yoga";
-import * as path from "path";
-
-import { resolvers } from "../resolvers";
 import { createTypeormConn } from "./createTypeormConn";
 
 export const startServer = async () => {
-  const typeDefs = importSchema(path.join(__dirname, "../schema.graphql"));
+  // GraphQL Configuration
+  const { server } = require("../config/graphql");
 
-  const server = new GraphQLServer({ typeDefs, resolvers });
+  // Creates TypeORM connection
   await createTypeormConn();
+
+  // Starts the server
   const app = await server.start({
     port: process.env.NODE_ENV === "test" ? 0 : 4000
   });
-  console.log("Server is running on localhost:4000");
+
+  console.log("\nServer is running on http://localhost:4000");
+
   return app;
 };
