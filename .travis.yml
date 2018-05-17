@@ -3,5 +3,7 @@ node_js:
  - "node"
 env:
 - NODE_ENV=test
+before_script:
+  - psql -c 'create database rubackgen_test;' -U postgres
 services:
 - postgresql
