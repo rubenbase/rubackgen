@@ -3,10 +3,9 @@ node_js:
  - "node"
 env:
 - NODE_ENV=test
+  global:
+    - PGPORT=5432
 services:
   - postgresql
   before_script:
     - psql -c 'create database rubackgen-test;' -U postgres
-env:
-  global:
-  - PGPORT=5432
