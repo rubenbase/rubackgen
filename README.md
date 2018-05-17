@@ -1,7 +1,7 @@
 # Backend Boilerplate
 
 Fast and scalable backend for Nodejs and Graphql projects. 
-Supports SQL and NoSQL databases, in this case it is made for PostgreSQL.
+Supports SQL and NoSQL databases, in this case using PostgreSQL.
 
 Features:
 - Register 
