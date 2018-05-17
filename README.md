@@ -1,4 +1,4 @@
-# Backend Generator
+# Backend Boilerplate
 
 Fast and scalable backend for Nodejs, Graphql and Postgres projects.
         
