@@ -1,4 +1,6 @@
-# ruBackGen
+# Backend Generator
+
+Fast and scalable backend for Nodejs, Graphql and Postgres projects.
         
 Steps to run this project:
 
