@@ -4,6 +4,7 @@
   "description": "Boilerplate for Nodejs and GraphQL.",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.1",
+    "@types/ioredis": "^3.2.8",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.8",
     "@types/uuid": "^3.4.3",
@@ -24,9 +25,11 @@
     "graphql-request": "^1.6.0",
     "graphql-tools": "^3.0.1",
     "graphql-yoga": "^1.13.1",
+    "ioredis": "^3.2.2",
     "pg": "^7.4.3",
     "reflect-metadata": "^0.1.12",
     "typeorm": "0.2.5",
+    "uuid": "^3.2.1",
     "yup": "^0.25.1"
   },
   "scripts": {

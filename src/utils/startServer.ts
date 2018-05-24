@@ -1,8 +1,22 @@
 import { createTypeormConn } from "./createTypeormConn";
+import { User } from "../models/User";
 
 export const startServer = async () => {
-  // GraphQL Configuration
-  const { server } = require("../config/graphql");
+  // GraphQL & Redis Configuration
+  const { server, redis } = require("../config/server");
+
+  // Load express routes
+  // require("../routes/authRoutes")(server);  <- In the future we can modularize
+  server.express.get("/confirm/:id", async (req: any, res: any) => {
+    const { id } = req.params;
+    const userId = await redis.get(id);
+    if (userId) {
+      await User.update({ id: userId }, { confirmed: true });
+      res.send("Ok");
+    } else {
+      res.send("Invalid");
+    }
+  });
 
   // Creates TypeORM connection
   await createTypeormConn();
