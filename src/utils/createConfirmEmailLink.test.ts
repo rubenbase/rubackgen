@@ -1,20 +1,29 @@
+import { Connection } from "typeorm";
+import Redis = require("ioredis");
+import fetch from "node-fetch";
+
 import { createConfirmEmailLink } from "./createConfirmEmailLink";
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "../models/User";
-import Redis = require("ioredis");
-import fetch from "node-fetch";
 
 let userId: string;
 const redis = new Redis();
 
+let conn: Connection;
+
 beforeAll(async () => {
-  await createTypeormConn();
+  conn = await createTypeormConn();
   const user = await User.create({
     email: "example3@rubackgen.com",
     password: "bhdsjvbshjdv"
   }).save();
   userId = user.id;
 });
+
+afterAll(async () => {
+  conn.close();
+});
+
 describe("Test createConfirmEmailLink", () => {
   test("Make sure it confirms user and clears key in redis", async () => {
     const url = await createConfirmEmailLink(
