@@ -24,7 +24,7 @@
     "host": "localhost",
     "port": 5432,
     "username": "postgres",
-    "password": "",
+    "password": "admin",
     "database": "rubackgen-test",
     "synchronize": true,
     "dropSchema": true,
