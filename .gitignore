@@ -7,3 +7,4 @@ temp/
 *.log
 info.md
 dump.rdb
+secrets.ts
