@@ -6,18 +6,10 @@ export const startServer = async () => {
   const { server, redis } = require("../config/server");
 
   // Load express routes
-  // require("../routes/authRoutes")(server);  <- In the future we can modularize
-  server.express.get("/confirm/:id", async (req: any, res: any) => {
-    const { id } = req.params;
-    const userId = await redis.get(id);
-    if (userId) {
-      await User.update({ id: userId }, { confirmed: true });
-      await redis.del(id);
-      res.send("Ok");
-    } else {
-      res.send("Invalid");
-    }
-  });
+  const authRoute = require("../routes/authRoutes")(User, redis);
+
+  // Mount routes
+  server.express.use("/auth", authRoute);
 
   // Creates TypeORM connection
   await createTypeormConn();

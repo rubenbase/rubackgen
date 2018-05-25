@@ -44,7 +44,7 @@ describe("Test createConfirmEmailLink", () => {
   });
 
   test("Sends invalid back if a bad ID is sent", async () => {
-    const response = await fetch(`${process.env.TEST_HOST}/confirm/12345`);
+    const response = await fetch(`${process.env.TEST_HOST}/auth/confirm/12345`);
     const text = await response.text();
     expect(text).toEqual("Invalid");
   });
