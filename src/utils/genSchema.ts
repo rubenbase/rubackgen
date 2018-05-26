@@ -12,35 +12,41 @@ import { mergeSchemas, makeExecutableSchema } from "graphql-tools";
  ******************************************************************/
 
 export const genSchema = () => {
-  const schemas: GraphQLSchema[] = [];
+  return (() => {
+    const schemas: GraphQLSchema[] = [];
 
-  let resolvers: any;
-  let typeDefs: any;
-  let resolversAdded: boolean = false;
-  let typeDefsAdded: boolean = false;
+    let resolvers: any;
+    let typeDefs: any;
+    let resolversAdded: boolean = false;
+    let typeDefsAdded: boolean = false;
 
-  const recursiveSearch = (dir: any) => {
-    const files: any = fs.readdirSync(dir);
-    files.forEach((file: any) => {
-      if (fs.statSync(path.join(dir, file)).isDirectory()) {
-        recursiveSearch(path.join(dir, file));
-      } else {
-        if (path.join(dir, file).endsWith("s.ts")) {
-          resolvers = require(path.join(dir, file));
+    const recursiveSearch = (dir: any) => {
+      const files: any = fs.readdirSync(dir);
+      files.forEach((file: any) => {
+        if (fs.statSync(path.join(dir, file)).isDirectory()) {
+          recursiveSearch(path.join(dir, file));
+        } else {
+          if (path.join(dir, file).endsWith("s.ts")) {
+            resolvers = require(path.join(dir, file));
+          }
+          if (path.join(dir, file).endsWith("l")) {
+            typeDefs = importSchema(path.join(dir, file));
+          }
+          if (resolversAdded && typeDefsAdded) {
+            schemas.push(makeExecutableSchema({ resolvers, typeDefs }));
+            resolversAdded = false;
+            typeDefsAdded = false;
+          }
         }
-        if (path.join(dir, file).endsWith("l")) {
-          typeDefs = importSchema(path.join(dir, file));
-        }
-        if (resolversAdded && typeDefsAdded) {
-          schemas.push(makeExecutableSchema({ resolvers, typeDefs }));
-          resolversAdded = false;
-          typeDefsAdded = false;
-        }
-      }
-    });
-  };
+      });
+    };
 
-  recursiveSearch(path.join(__dirname, "../graphql"));
+    recursiveSearch(path.join(__dirname, "../graphql"));
 
-  return mergeSchemas({ schemas });
+    console.log(
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA => ",
+      mergeSchemas({ schemas })
+    );
+    return mergeSchemas({ schemas });
+  })();
 };
