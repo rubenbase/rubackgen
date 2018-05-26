@@ -8,3 +8,4 @@ temp/
 info.md
 dump.rdb
 secrets.ts
+.env

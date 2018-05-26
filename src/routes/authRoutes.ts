@@ -19,6 +19,7 @@ module.exports = (User: any, redis: any) => {
         res.send("Invalid");
       }
     });
+
     return router;
   })();
 };
