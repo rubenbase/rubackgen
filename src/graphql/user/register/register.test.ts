@@ -1,12 +1,12 @@
 import { request } from "graphql-request";
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 import {
   duplicateEmail,
   emailNotLongEnough,
   invalidEmail,
   passwordNotLongEnough
-} from "../../utils/errorMessages";
-import { createTypeormConn } from "../../utils/createTypeormConn";
+} from "../../../utils/errorMessages";
+import { createTypeormConn } from "../../../utils/createTypeormConn";
 
 const email = "test@rubackgen.com";
 const password = "123456";
