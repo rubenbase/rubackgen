@@ -8,6 +8,7 @@
     "password": "admin",
     "database": "rubackgen",
     "synchronize": true,
+    "dropSchema": true,
     "logging": true,
     "entities": ["src/models/**/*.ts"],
     "migrations": ["src/migration/**/*.ts"],

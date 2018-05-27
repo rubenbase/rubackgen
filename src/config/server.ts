@@ -29,7 +29,8 @@ const server = new GraphQLServer({
   schema: genSchema(),
   context: ({ request }) => ({
     redis,
-    url: request.protocol + "://" + request.get("host")
+    url: request.protocol + "://" + request.get("host"),
+    session: request.session
   })
 });
 

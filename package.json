@@ -4,10 +4,15 @@
   "description": "Boilerplate for Nodejs and GraphQL.",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.1",
+    "@types/connect-redis": "^0.0.7",
+    "@types/dotenv": "^4.0.3",
+    "@types/express": "^4.11.1",
+    "@types/express-session": "^1.15.9",
     "@types/ioredis": "^3.2.8",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.8",
     "@types/node-fetch": "^1.6.9",
+    "@types/sparkpost": "^2.1.4",
     "@types/uuid": "^3.4.3",
     "@types/yup": "^0.24.4",
     "gql2ts": "^1.8.0",
@@ -21,12 +26,12 @@
   },
   "dependencies": {
     "@gql2ts/from-schema": "^1.8.0",
-    "@types/dotenv": "^4.0.3",
-    "@types/express": "^4.11.1",
-    "@types/sparkpost": "^2.1.4",
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
+    "connect-redis": "^3.3.3",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "graphql": "^0.13.2",
     "graphql-import": "^0.5.2",
     "graphql-request": "^1.6.0",
@@ -42,8 +47,9 @@
     "yup": "^0.25.1"
   },
   "scripts": {
-    "win-start": "SET NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
-    "win-test": "SET NODE_ENV=test&& jest --watch",
+    "win-start":
+      "SET NODE_ENV=development&& nodemon --exec ts-node src/index.ts",
+    "win-test": "SET NODE_ENV=test&& jest --watch --runInBand",
     "start": "NODE_ENV=development nodemon --exec ts-node src/index.ts",
     "test": "NODE_ENV=test jest --forceExit",
     "gen-schema-types": "ts-node src/scripts/createTypes.ts"
@@ -54,13 +60,6 @@
       "^.+\\.tsx?$": "ts-jest"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
   }
 }

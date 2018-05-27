@@ -3,7 +3,7 @@
 
 declare namespace GQL {
 interface IGraphQLResponseRoot {
-data?: ;
+data?: IQuery | IMutation;
 errors?: Array<IGraphQLResponseError>;
 }
 
@@ -18,6 +18,39 @@ locations?: Array<IGraphQLResponseErrorLocation>;
 interface IGraphQLResponseErrorLocation {
 line: number;
 column: number;
+}
+
+interface IQuery {
+__typename: "Query";
+fix2: string | null;
+fix: string | null;
+hello: string;
+}
+
+interface IHelloOnQueryArguments {
+name?: string | null;
+}
+
+interface IMutation {
+__typename: "Mutation";
+login: Array<IError>;
+register: Array<IError>;
+}
+
+interface ILoginOnMutationArguments {
+email: string;
+password: string;
+}
+
+interface IRegisterOnMutationArguments {
+email: string;
+password: string;
+}
+
+interface IError {
+__typename: "Error";
+path: string;
+message: string;
 }
 }
 

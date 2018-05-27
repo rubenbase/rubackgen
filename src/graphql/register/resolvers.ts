@@ -1,15 +1,13 @@
-import bcrypt = require("bcryptjs");
 import * as yup from "yup";
-// import { v4 } from "uuid";
 
-import { User } from "../../../models/User";
-import { ResolverMap } from "../../../types/graphql-utils";
-import { formatYupError } from "../../../utils/formatYupError";
+import { User } from "../../models/User";
+import { ResolverMap } from "../../types/graphql-utils";
+import { formatYupError } from "../../utils/formatYupError";
 import {
   emailNotLongEnough,
   invalidEmail,
   passwordNotLongEnough
-} from "../../../utils/errorMessages";
+} from "../../utils/errorMessages";
 // import { createConfirmEmailLink } from "../../utils/createConfirmEmailLink";
 // import { sendEmail } from "../../utils/sendEmail";
 
@@ -53,10 +51,9 @@ export const resolvers: ResolverMap = {
           }
         ];
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
       const user = User.create({
         email,
-        password: hashedPassword
+        password
       });
       await user.save();
 
