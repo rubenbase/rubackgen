@@ -5,6 +5,7 @@ import connectRedis = require("connect-redis");
 
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "../models/User";
+import { redisSessionPrefix } from "../constants";
 
 const SESSION_SECRET = "sdbvsahvasv";
 const RedisStore = connectRedis(session);
@@ -24,7 +25,8 @@ export const startServer = async () => {
   server.express.use(
     session({
       store: new RedisStore({
-        client: redis as any
+        client: redis as any,
+        prefix: redisSessionPrefix
       }),
       name: "qid",
       secret: SESSION_SECRET,
