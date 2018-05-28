@@ -23,29 +23,31 @@ afterAll(async () => {
   conn.close();
 });
 
-describe("me", () => {
-  test("return null if no cookie", async () => {
+describe("logout", () => {
+  test("test logging out a user", async () => {
+    // Create our client
     const client = new TestClient(process.env.TEST_HOST as string);
+
+    // We login
+    await client.login(email, password);
 
     // We get the cookie
     const response = await client.me();
-    expect(response.data.me).toBeNull();
-  });
 
-  test("get current user", async () => {
-    const client = new TestClient(process.env.TEST_HOST as string);
-
-    // we login
-    await client.login(email, password);
-
-    // we get the cookie
-    const response = await client.me();
-
+    // We compare the data of the cookie to see if matches
     expect(response.data).toEqual({
       me: {
         id: userId,
         email
       }
     });
+
+    // client logout
+    await client.logout();
+
+    // We get the cookie
+    const response2 = await client.me();
+
+    expect(response2.data.me).toBeNull();
   });
 });

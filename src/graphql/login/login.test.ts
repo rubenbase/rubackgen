@@ -3,27 +3,10 @@ import { invalidLogin, confirmEmailError } from "../../utils/errorMessages";
 import { User } from "../../models/User";
 import { createTypeormConn } from "../../utils/createTypeormConn";
 import { Connection } from "typeorm";
+import { TestClient } from "../../utils/TestClient";
 
 const email = "bobds@bob.com";
 const password = "123456";
-
-const registerMutation = (e: string, p: string) => `
-mutation {
-  register(email: "${e}", password: "${p}") {
-    path
-    message
-  }
-}
-`;
-
-const loginMutation = (e: string, p: string) => `
-mutation {
-  login(email: "${e}", password: "${p}") {
-    path
-    message
-  }
-}
-`;
 
 let conn: Connection;
 beforeAll(async () => {
@@ -33,13 +16,16 @@ afterAll(async () => {
   conn.close();
 });
 
-const loginExpectError = async (e: string, p: string, errMsg: string) => {
-  const response = await request(
-    process.env.TEST_HOST as string,
-    loginMutation(e, p)
-  );
+const loginExpectError = async (
+  client: TestClient,
+  e: string,
+  p: string,
+  errMsg: string
+) => {
+  // We login
+  const response = await client.login(e, p);
 
-  expect(response).toEqual({
+  expect(response.data).toEqual({
     login: [
       {
         path: "email",
@@ -51,30 +37,30 @@ const loginExpectError = async (e: string, p: string, errMsg: string) => {
 
 describe("login", () => {
   test("email not found send back error", async () => {
-    await loginExpectError("bob@bob.com", "whatever", invalidLogin);
+    // Create our client
+    const client = new TestClient(process.env.TEST_HOST as string);
+
+    await loginExpectError(client, "bob@bob.com", "whatever", invalidLogin);
   });
 
   test("email not confirmed", async () => {
+    // Create our client
+    const client = new TestClient(process.env.TEST_HOST as string);
+
     // We register an user.
-    await request(
-      process.env.TEST_HOST as string,
-      registerMutation(email, password)
-    );
+    await client.register(email, password);
 
     // We expect an error as we didn't confirm the email.
-    await loginExpectError(email, password, confirmEmailError);
+    await loginExpectError(client, email, password, confirmEmailError);
 
     // We confirm the email.
     await User.update({ email }, { confirmed: true });
 
     // We try to login with bad password.
-    await loginExpectError(email, "fvzdvzvxcv", invalidLogin);
+    await loginExpectError(client, email, "fvzdvzvxcv", invalidLogin);
 
     // We login correctly.
-    const response = await request(
-      process.env.TEST_HOST as string,
-      loginMutation(email, password)
-    );
-    expect(response).toEqual({ login: null });
+    const response = await client.login(email, password);
+    expect(response.data).toEqual({ login: null });
   });
 });
