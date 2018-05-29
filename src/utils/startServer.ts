@@ -8,6 +8,7 @@ import connectRedis = require("connect-redis");
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "../models/User";
 import { redisSessionPrefix } from "../constants";
+// import { createTestConn } from "./testing/createTestConn";
 
 const SESSION_SECRET = "sdbvsahvasv";
 const RedisStore = connectRedis(session);
@@ -22,6 +23,11 @@ export const startServer = async () => {
 
   // GraphQL & Redis Configuration
   const { server, redis } = require("../config/server");
+
+  // Clears redis data for testing
+  if (process.env.NODE_ENV === "test") {
+    await redis.flushall();
+  }
 
   // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
   // app.enable("trust proxy");
@@ -72,7 +78,12 @@ export const startServer = async () => {
   server.express.use("/auth", authRoute);
 
   // Creates TypeORM connection
-  await createTypeormConn();
+  if (process.env.NODE_ENV === "test") {
+    // await createTestConn(true);
+    await createTypeormConn();
+  } else {
+    await createTypeormConn();
+  }
 
   // Starts the server
   const app = await server.start({

@@ -3,8 +3,8 @@ import Redis = require("ioredis");
 import fetch from "node-fetch";
 
 import { createConfirmEmailLink } from "./createConfirmEmailLink";
-import { createTypeormConn } from "./createTypeormConn";
-import { User } from "../models/User";
+import { createTestConn } from "../../utils/testing/createTestConn";
+import { User } from "../../models/User";
 
 let userId: string;
 const redis = new Redis();
@@ -12,7 +12,7 @@ const redis = new Redis();
 let conn: Connection;
 
 beforeAll(async () => {
-  conn = await createTypeormConn();
+  conn = await createTestConn();
   const user = await User.create({
     email: "example3@rubackgen.com",
     password: "bhdsjvbshjdv"
