@@ -22,7 +22,10 @@ column: number;
 
 interface IQuery {
 __typename: "Query";
+fix4: string | null;
 fix2: string | null;
+fix3: string | null;
+me: IUser | null;
 fix: string | null;
 hello: string;
 }
@@ -31,10 +34,28 @@ interface IHelloOnQueryArguments {
 name?: string | null;
 }
 
+interface IUser {
+__typename: "User";
+id: string;
+email: string;
+}
+
 interface IMutation {
 __typename: "Mutation";
+sendForgotPasswordEmail: boolean | null;
+forgotPasswordChange: Array<IError>;
 login: Array<IError>;
+logout: boolean | null;
 register: Array<IError>;
+}
+
+interface ISendForgotPasswordEmailOnMutationArguments {
+email: string;
+}
+
+interface IForgotPasswordChangeOnMutationArguments {
+newPassword: string;
+key: string;
 }
 
 interface ILoginOnMutationArguments {

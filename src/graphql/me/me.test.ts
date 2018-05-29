@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createTypeormConn } from "../../utils/createTypeormConn";
 import { User } from "../../models/User";
 import { Connection } from "typeorm";

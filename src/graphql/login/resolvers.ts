@@ -2,7 +2,11 @@ import bcrypt = require("bcryptjs");
 
 import { User } from "../../models/User";
 import { ResolverMap } from "../../types/graphql-utils";
-import { invalidLogin, confirmEmailError } from "../../utils/errorMessages";
+import {
+  invalidLogin,
+  confirmEmailError,
+  forgotPasswordLockedError
+} from "../../utils/errorMessages";
 import { userSessionIdPrefix } from "../../constants";
 
 const errorResponse = [
@@ -33,6 +37,15 @@ export const resolvers: ResolverMap = {
           {
             path: "email",
             message: confirmEmailError
+          }
+        ];
+      }
+
+      if (user.forgotPasswordLocked) {
+        return [
+          {
+            path: "email",
+            message: forgotPasswordLockedError
           }
         ];
       }
