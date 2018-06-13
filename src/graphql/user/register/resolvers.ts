@@ -1,10 +1,10 @@
 import * as yup from "yup";
 
-import { User } from "../../models/User";
-import { ResolverMap } from "../../types/graphql-utils";
-import { formatYupError } from "../../utils/formatYupError";
-import { emailNotLongEnough, invalidEmail } from "../../utils/errorMessages";
-import { registerPasswordValidation } from "../../utils/validation/yupSchemas";
+import { User } from "../../../models/User";
+import { ResolverMap } from "../../../types/graphql-utils";
+import { formatYupError } from "../../../utils/validation/formatYupError";
+import { emailNotLongEnough, invalidEmail } from "../../../utils/validation/errorMessages";
+import { registerPasswordValidation } from "../../../utils/validation/yupSchemas";
 // import { sendEmail } from "../../utils/sendEmail";
 // import { createConfirmEmailLink } from "./createConfirmEmailLink";
 
@@ -18,9 +18,7 @@ const schema = yup.object().shape({
 });
 
 export const resolvers: ResolverMap = {
-  Query: {
-    fix: () => "fix"
-  },
+
   Mutation: {
     register: async (
       _,

@@ -1,25 +1,26 @@
-import { createTypeormConn } from "../../utils/createTypeormConn";
-import { User } from "../../models/User";
+import { createTestConn } from "../../../utils/testing/createTestConn";
+import { User } from "../../../models/User";
 import { Connection } from "typeorm";
-import { TestClient } from "../../utils/TestClient";
-import { createForgotPasswordLink } from "../../utils/createForgotPasswordLink";
+import { TestClient } from "../../../utils/testing/TestClient";
+import { createForgotPasswordLink } from "../../../utils/createForgotPasswordLink";
 import Redis = require("ioredis");
-import { forgotPasswordLockAccount } from "../../utils/forgotPasswordLockAccount";
+import { forgotPasswordLockAccount } from "../../../utils/forgotPasswordLockAccount";
 import {
   forgotPasswordLockedError,
   passwordNotLongEnough,
   expiredKeyError
-} from "../../utils/errorMessages";
-
-const redis = new Redis();
+} from "../../../utils/validation/errorMessages";
+import faker = require("faker");
 let conn: Connection;
-const email = "example3@rubackgen.com";
-const password = "bhdsjvbshjdv";
-const newPassword = "dsvdsfvsdvsdfvsdvfds";
+const redis = new Redis();
+faker.seed(Date.now() + 0);
+const email = faker.internet.email();
+const password = faker.internet.password();
+const newPassword = faker.internet.password();
 let userId: string;
 
 beforeAll(async () => {
-  conn = await createTypeormConn();
+  conn = await createTestConn();
   const user = await User.create({
     email,
     password,
@@ -74,7 +75,9 @@ describe("forgot password", () => {
     });
 
     // make sure redis key expires after password change
-    expect(await client.forgotPasswordChange("dvasvsavsavs", key)).toEqual({
+    expect(
+      await client.forgotPasswordChange(faker.internet.password(), key)
+    ).toEqual({
       data: {
         forgotPasswordChange: [
           {

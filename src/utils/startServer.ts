@@ -8,7 +8,7 @@ import connectRedis = require("connect-redis");
 import { createTypeormConn } from "./createTypeormConn";
 import { User } from "../models/User";
 import { redisSessionPrefix } from "../constants";
-// import { createTestConn } from "./testing/createTestConn";
+import { createTestConn } from "./testing/createTestConn";
 
 const SESSION_SECRET = "sdbvsahvasv";
 const RedisStore = connectRedis(session);
@@ -80,7 +80,7 @@ export const startServer = async () => {
   // Creates TypeORM connection
   if (process.env.NODE_ENV === "test") {
     // await createTestConn(true);
-    await createTypeormConn();
+    await createTestConn(true);
   } else {
     await createTypeormConn();
   }

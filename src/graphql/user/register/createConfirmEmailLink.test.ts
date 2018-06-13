@@ -3,19 +3,19 @@ import Redis = require("ioredis");
 import fetch from "node-fetch";
 
 import { createConfirmEmailLink } from "./createConfirmEmailLink";
-import { createTestConn } from "../../utils/testing/createTestConn";
-import { User } from "../../models/User";
-
+import { createTestConn } from "../../../utils/testing/createTestConn";
+import { User } from "../../../models/User";
+import faker = require("faker");
 let userId: string;
 const redis = new Redis();
-
+faker.seed(Date.now() + 4);
 let conn: Connection;
 
 beforeAll(async () => {
   conn = await createTestConn();
   const user = await User.create({
-    email: "example3@rubackgen.com",
-    password: "bhdsjvbshjdv"
+    email: faker.internet.email(),
+    password: faker.internet.password()
   }).save();
   userId = user.id;
 });

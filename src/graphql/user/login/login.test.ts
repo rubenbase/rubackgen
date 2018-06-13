@@ -1,15 +1,19 @@
-import { invalidLogin, confirmEmailError } from "../../utils/errorMessages";
-import { User } from "../../models/User";
-import { createTypeormConn } from "../../utils/createTypeormConn";
+import { createTestConn } from "../../../utils/testing/createTestConn";
+import {
+  invalidLogin,
+  confirmEmailError
+} from "../../../utils/validation/errorMessages";
+import { User } from "../../../models/User";
 import { Connection } from "typeorm";
-import { TestClient } from "../../utils/TestClient";
-
-const email = "bobds@bob.com";
-const password = "123456";
+import { TestClient } from "../../../utils/testing/TestClient";
+import faker = require("faker");
+faker.seed(Date.now() + 1);
+const email = faker.internet.email();
+const password = faker.internet.password();
 
 let conn: Connection;
 beforeAll(async () => {
-  conn = await createTypeormConn();
+  conn = await createTestConn();
 });
 afterAll(async () => {
   conn.close();
@@ -39,7 +43,12 @@ describe("login", () => {
     // Create our client
     const client = new TestClient(process.env.TEST_HOST as string);
 
-    await loginExpectError(client, "bob@bob.com", "whatever", invalidLogin);
+    await loginExpectError(
+      client,
+      faker.internet.email(),
+      faker.internet.password(),
+      invalidLogin
+    );
   });
 
   test("email not confirmed", async () => {
@@ -56,7 +65,12 @@ describe("login", () => {
     await User.update({ email }, { confirmed: true });
 
     // We try to login with bad password.
-    await loginExpectError(client, email, "fvzdvzvxcv", invalidLogin);
+    await loginExpectError(
+      client,
+      email,
+      faker.internet.password(),
+      invalidLogin
+    );
 
     // We login correctly.
     const response = await client.login(email, password);

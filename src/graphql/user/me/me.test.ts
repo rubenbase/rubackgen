@@ -1,15 +1,16 @@
-import { createTypeormConn } from "../../utils/createTypeormConn";
-import { User } from "../../models/User";
 import { Connection } from "typeorm";
-import { TestClient } from "../../utils/TestClient";
-
+import { User } from "../../../models/User";
+import { TestClient } from "../../../utils/testing/TestClient";
+import { createTestConn } from "../../../utils/testing/createTestConn";
+import faker = require("faker");
 let conn: Connection;
-const email = "example3@rubackgen.com";
-const password = "bhdsjvbshjdv";
+faker.seed(Date.now() + 3);
+const email = faker.internet.email();
+const password = faker.internet.password();
 let userId: string;
 
 beforeAll(async () => {
-  conn = await createTypeormConn();
+  conn = await createTestConn();
   const user = await User.create({
     email,
     password,

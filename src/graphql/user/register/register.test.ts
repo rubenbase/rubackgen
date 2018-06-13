@@ -1,21 +1,24 @@
 import { request } from "graphql-request";
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 import {
   duplicateEmail,
   emailNotLongEnough,
   invalidEmail,
   passwordNotLongEnough
-} from "../../utils/errorMessages";
-import { createTypeormConn } from "../../utils/createTypeormConn";
+} from "../../../utils/validation/errorMessages";
 import { Connection } from "typeorm";
-import { TestClient } from "../../utils/TestClient";
+import { TestClient } from "../../../utils/testing/TestClient";
+import { createTestConn } from "../../../utils/testing/createTestConn";
+import faker = require("faker");
 
-const email = "test@rubackgen.com";
-const password = "123456";
+faker.seed(Date.now() + 5);
+
+const email = faker.internet.email();
+const password = faker.internet.password();
 
 let conn: Connection;
 beforeAll(async () => {
-  conn = await createTypeormConn();
+  conn = await createTestConn();
 });
 afterAll(async () => {
   conn.close();
@@ -67,7 +70,7 @@ describe("Register user", async () => {
     const client = new TestClient(process.env.TEST_HOST as string);
 
     // catch bad password
-    const response4 = await client.register(email, "aa");
+    const response4 = await client.register(faker.internet.email(), "aa");
 
     expect(response4.data).toEqual({
       register: [
